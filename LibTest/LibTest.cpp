@@ -7,11 +7,9 @@
 #include "LibTest.h"
 
 #include  <stdio.h>
-#include <pybind11/pybind11.h>
 
 #include <iostream>
 
-namespace py = pybind11;
 // DLL internal state variables:
 static unsigned long long previous_;  // Previous value, if any
 static unsigned long long current_;   // Current sequence value
@@ -69,22 +67,34 @@ int add(int i, int j) {
 
 }
 NRC_RobotDHConfig config;
-int createRobotConfig(double L1, double L2, double L3)
+NRC_Robot* createRobot(char name[10])
 {
-    //NRC_RobotDHConfig config;
+    NRC_Robot* robot = new NRC_Robot();
+    memcpy(robot->name, name, strlen(name));
+    std::cout << name << std::endl;
+	return  robot;
+}
+NRC_RobotDHConfig createRobotConfig(double L1, double L2, double L3)
+{
+    NRC_RobotDHConfig config;
 
     config.L1 = L1;
     config.L2 = L2;
-   config.L3 = L3;
-    std::cout << config.L1 << config.L2 << config.L3 << std::endl;
-    std::cout << "createRobotConfig\n";
-    printf("Create\n");
-   // return config;
+    config.L3 = L3;
+    std::cout << "createRobotConfig" << config.L1 <<"  "<< config.L2 << "  " << config.L3 << "  " << std::endl;;
+    return config;
+}
+
+int move()
+{
+    std::cout << "Robot start to move...." <<std::endl;
     return 0;
 }
 
-PYBIND11_MODULE(libtest, m) {
-    m.doc() = "pybind11 libpytest plugin"; // optional module docstring
-
-    m.def("add", &add, "A function which adds two numbers");
+int setRobotConfig(NRC_Robot* robot, NRC_RobotDHConfig config)
+{
+    robot->dhConfig = config;
+    std::cout << "From C code,name is: "<<robot->name<< config.L1 <<"SetRobotConfig success"<< std::endl;
+	return 0;
 }
+

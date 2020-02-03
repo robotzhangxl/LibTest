@@ -64,8 +64,14 @@ typedef struct _NRC_Robot
 {
     int id;
     char name[10];
-    NRC_RobotDHConfig* dhConfig;
+    NRC_RobotDHConfig dhConfig;
 
 }NRC_Robot;
 
-extern "C" LIBTEST_API int createRobotConfig(double L1,double L2,double CoupleCoe12);
+extern "C" LIBTEST_API NRC_Robot* createRobot(char name[10]);
+
+extern "C" LIBTEST_API NRC_RobotDHConfig createRobotConfig(double L1,double L2,double CoupleCoe12);
+
+extern "C" LIBTEST_API int move();
+
+extern "C" LIBTEST_API int setRobotConfig(NRC_Robot* robot,NRC_RobotDHConfig config);
